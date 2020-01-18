@@ -88,16 +88,17 @@
                                 <div class="form-group form-inline">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default" title="新建" onclick='location.href="goodsDetail.html"'><i class="fa fa-trash-o"></i>新建</button>
-                                        <button type="button" class="btn btn-default" title="删除" onclick='confirm("你确认要删除吗？")'><i class="fa fa-trash-o"></i> 删除</button>
+                                        <button type="button" class="btn btn-default" title="删除" id="del"><i class="fa fa-trash-o"></i> 删除</button>
                                         <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
                                     </div>
                                 </div>
                             </div>
                             <div class="box-tools pull-right">
                                 <div class="has-feedback">
-                                    <input type="text" class="form-control input-sm" placeholder="搜索">
-                                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                    <input type="text" class="form-control input-sm" id="searchValue" placeholder="搜索">
+                                    <button type="button" class="glyphicon glyphicon-search form-control-feedback" id="searchBtu"></button>
                                 </div>
+
                             </div>
                             <!--工具栏/-->
 
@@ -105,34 +106,35 @@
                             <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
                                 <thead>
                                     <tr>
-                                        <th class="" style="padding-right:0px;">
+                                        <th class="text-center" style="padding-right:0px;">
                                             <input id="selall" type="checkbox" class="icheckbox_square-blue">
                                         </th>
-                                        <th class="sorting_asc">ID</th>
-                                        <th class="sorting">商品名称</th>
-                                        <th class="sorting">上下架</th>
-                                        <th class="sorting">金额</th>
-                                        <th class="sorting">创建时间</th>
-                                        <th class="sorting">最后更新时间</th>
-
+                                        <th class="text-center">ID</th>
+                                        <th class="text-center">商品名称</th>
+                                        <th class="text-center">子标题</th>
+                                        <th class="text-center">状态</th>
+                                        <th class="text-center">创建时间</th>
+                                        <th class="text-center">最后更新时间</th>
+                                        <th class="text-center">价格</th>
                                         <th class="text-center">操作</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
+                                <tbody id="goodsList">
+                                   <!-- <tr>
                                         <td><input name="ids" type="checkbox"></td>
                                         <td>
                                             1
                                         </td>
                                         <td>北京一日游</td>
+                                        <td>游戏</td>
                                         <td>上架</td>
+                                        <td>2017-03-09 13:51:26</td>
+                                        <td>2017-03-09 13:51:26</td>
                                         <td>￥1000</td>
-                                        <td>2017-03-09 13:51:26</td>
-                                        <td>2017-03-09 13:51:26</td>
-
                                         <td class="text-center">
                                             <button type="button" class="btn bg-olive btn-xs" onclick='location.href="goodsEdit.html"'>编辑</button>
                                         </td>
+                                </tr>-->
                                 </tbody>
                                 <!--
                             <tfoot>
@@ -157,25 +159,18 @@
                     <!-- .box-footer-->
                     <div class="box-footer">
                         <div class="pull-left">
-                            <div class="form-group form-inline">
-                                总共2 页，共14 条数据。 每页
-                                <select class="form-control">
-                            <option>10</option>
-                            <option>15</option>
-                            <option>20</option>
-                            <option>50</option>
-                            <option>80</option>
-                        </select> 条
+                            <div class="form-group form-inline" id="pageData">
+                                总共2 页，共14 条数据。
                             </div>
                         </div>
 
                         <div class="box-tools pull-right">
-                            <ul class="pagination">
+                            <ul class="pagination" id="pages">
                                 <li>
                                     <a href="#" aria-label="Previous">首页</a>
                                 </li>
                                 <li><a href="#">上一页</a></li>
-                                <li><a href="#">1</a></li>
+                                <li class="active"><a href="#">1</a></li>
                                 <li><a href="#">2</a></li>
                                 <li><a href="#">3</a></li>
                                 <li><a href="#">4</a></li>
@@ -251,8 +246,8 @@
     <script src="./plugins/bootstrap-slider/bootstrap-slider.js"></script>
     <script src="./plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
     <script src="./plugins/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="plugins/common.js"></script>
     <script>
-
         $(document).ready(function() {
             // 选择框
             $(".select2").select2();
@@ -262,8 +257,6 @@
                 locale: 'zh-CN'
             });
         });
-
-
         // 设置激活菜单
         function setSidebarActive(tagUri) {
             var liObj = $("#" + tagUri);
@@ -297,6 +290,110 @@
         });
         $("#header").load("header.html");
         $("#aside").load("aside.html");
+    </script>
+    <script type="text/javascript">
+        var goodsList = $("#goodsList");
+        var pageData = $("#pageData");
+        var pages = $("#pages");
+        var searchValue = $("#searchValue");
+        var del = $("#del");
+        $(function () {
+            load(searchValue.val(),null,1,10);
+            searchValue.click(function () {
+                load(searchValue.val(),null,1,10);
+            });
+            del.click(function () {
+                var isDel = confirm("您确定要删除吗？");
+                var id_array = new Array();
+                if(isDel){
+                    $('input[name="ids"]:checked').each(function () {
+                        id_array.push($(this).val());
+                    })
+                }
+                if(id_array.length==0){
+                    window.alert("请选择需要删除的项目");
+                }else {
+                    var ids = id_array.join(",");
+                    $.post(ipAddr+"/goods/deleteGoodsById",{ids:ids},function (flag) {
+                        if(flag==true){
+                            window.alert("删除成功");
+                            window.location.reload();
+                        }else {
+                            window.alert("删除失败");
+                            window.location.reload();
+                        }
+                    })
+                }
+            });
+
+
+        });
+        function load(key,status,page,rows){
+            $.get(ipAddr+"/goods/selectGoodsByPage",{key:key,status:status,page:page,rows:rows},function (pb) {
+                var items = pb.items;
+                var list = '';
+                var pageList='';
+                pageList+='<li onclick="javascript:load(\''+key+'\','+status+','+1+','+rows+')"><a href="javascript:void(0)"  aria-label="Previous">首页</a></li>';
+                var before = pb.currentPage - 1;
+                if(before<=1){
+                    before=1;
+                }
+                var beforePage = '<li onclick="javascript:load(\''+key+'\','+status+','+before+','+rows+')"><a href="javascript:void(0)">上一页</a></li>';
+                pageList+=beforePage;
+                var begin;
+                var end;
+                if(pb.totalPage<10){
+                    begin=1;
+                    end=pb.totalPage;
+                }else {
+                    begin=pb.currentPage-5;
+                    end=pb.currentPage+4;
+                    if(begin<1){
+                        begin=1;
+                        end=begin+9;
+                    }
+                    if(end>pb.totalPage){
+                        end=pb.totalPage;
+                        begin=end-9;
+                    }
+                }
+                var li = '';
+                for(var i = begin;i<=end;i++){
+                    if(i==pb.currentPage){
+                        li += '<li onclick="javascript:load(\''+key+'\','+status+','+i+','+rows+')" class="active"><a href="javascript:void(0)">'+i+'</a></li>';
+                    }else {
+                        li += '<li onclick="javascript:load(\''+key+'\','+status+','+i+','+rows+')"><a href="javascript:void(0)">'+i+'</a></li>';
+                    }
+                }
+                pageList+=li;
+                var next = pb.currentPage + 1;
+                if(next>pb.totalPage){
+                    next=pb.totalPage;
+                }
+                pageList+='<li onclick="javascript:load(\''+key+'\','+status+','+next+','+rows+')"><a href="javascript:void(0)">下一页</a></li>';
+                pageList+='<li onclick="javascript:load(\''+key+'\','+status+','+pb.totalPage+','+rows+')"><a href="javascript:void(0)" aria-label="Next">尾页</a></li>';
+                pages.html(pageList);
+                pageData.html('总共'+pb.totalPage+'页，共'+pb.total+'条数据。');
+                for (var i = 0; i < items.length; i++) {
+                    list+='<tr class="text-center">' +
+                        '                <td><input name="ids" type="checkbox" value="'+items[i].id+'"></td>\n' +
+                        '                <td>' +
+                        '                    '+items[i].id+
+                        '                </td>' +
+                        '                <td>'+items[i].title+'</td>' +
+                        '                <td>'+items[i].subtitle+'</td>' +
+                        '                <td>'+items[i].statusStr+'</td>' +
+                        '                <td>'+mill2date(items[i].addTime)+'</td>' +
+                        '                <td>'+mill2date(items[i].updateTime)+'</td>' +
+                        '                <td>￥'+items[i].price+'</td>' +
+                        '                <td class="text-center">' +
+                        '                    <button type="button" class="btn bg-olive btn-xs" onclick=\'location.href="goodsEdit.html?id='+items[i].id+'"\'>编辑</button>' +
+                        '                </td>' +
+                        '        </tr>';
+                }
+                goodsList.html(list);
+            },"json");
+        }
     </script>
 </body>
 

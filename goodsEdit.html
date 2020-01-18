@@ -49,7 +49,11 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
-
+    <style>
+        .w-e-text-container{
+            height: 700px !important;
+        }
+    </style>
 
 
 
@@ -141,61 +145,80 @@
                 <div class="panel-heading">商品信息</div>
                 <div class="row data-type">
 
-                    <div class="col-md-2 title">商品名称</div>
+                    <div class="col-md-2 title">商品标题</div>
                     <div class="col-md-4 data">
-                        <input type="text" class="form-control" placeholder="商品名称" value="">
+                        <input type="text" class="form-control" placeholder="商品名称" value="" id="title">
+                    </div>
+                    <div class="col-md-2 title">子标题</div>
+                    <div class="col-md-4 data">
+                        <input type="text" class="form-control" placeholder="商品名称" value="" id="subtitle">
                     </div>
 
                     <div class="col-md-2 title">商品价格</div>
                     <div class="col-md-4 data">
-                        <input type="text" class="form-control" placeholder="商品价格" value="">
+                        <input type="text" class="form-control" placeholder="商品价格" value="" id="price">
                     </div>
                     <div class="col-md-2 title">上下架</div>
                     <div class="col-md-4 data">
-                            <select class="form-control select2" style="width: 100%;">
-                                <option value="" selected="selected">上架</option>
-                                <option value="">下架</option>
+                            <select class="form-control" style="width: 100%;" id="sel">
+                                <option value="true" selected="selected">上架</option>
+                                <option value="false">下架</option>
                             </select>
                     </div>
                     <div class="col-md-2 title">图片1</div>
                     <div class="col-md-4 data">
-                        <input type="file" class="form-control">
+                        <input type="file" class="form-control" id="image1" accept="image/gif, image/jpeg, image/png, image/jpg">
                     </div>
                     <div class="col-md-2 title">图片2</div>
                     <div class="col-md-4 data">
-                        <input type="file" class="form-control">
-                    </div><div class="col-md-2 title">图片3</div>
+                        <input type="file" class="form-control" id="image2" accept="image/gif, image/jpeg, image/png, image/jpg">
+                    </div>
+                    <div class="col-md-2 title">图片3</div>
                     <div class="col-md-4 data">
-                        <input type="file" class="form-control">
+                        <input type="file" class="form-control" id="image3" accept="image/gif, image/jpeg, image/png, image/jpg">
+                    </div>
+                    <div class="col-md-2 title">图片4</div>
+                    <div class="col-md-4 data">
+                        <input type="file" class="form-control" id="image4" accept="image/gif, image/jpeg, image/png, image/jpg">
+                    </div>
+                    <div class="col-md-2 title">图片5</div>
+                    <div class="col-md-4 data">
+                        <input type="file" class="form-control" id="image5" accept="image/gif, image/jpeg, image/png, image/jpg">
                     </div>
                     <div class="col-md-2 title">最后操作人</div>
                     <div class="col-md-4 data">
-                        <input type="text" class="form-control" disabled placeholder="最后操作人" value="">
+                        <input type="text" class="form-control" disabled placeholder="最后操作人" value="" id="adminName">
                     </div>
                     <div class="col-md-2 title">创建时间</div>
                     <div class="col-md-4 data">
-                        <input type="text" class="form-control" disabled placeholder="创建时间" value="">
+                        <input type="text" class="form-control" disabled placeholder="创建时间" value="" id="createTime">
                     </div>
                     <div class="col-md-2 title">更新时间</div>
                     <div class="col-md-4 data">
-                        <input type="text" class="form-control" disabled placeholder="更新时间" value="">
+                        <input type="text" class="form-control" disabled placeholder="更新时间" value="" id="updateTime">
                     </div>
                 </div>
                 <div class="col-md-4">商品详情</div><br>
-                <div id="div1">
-                </div>
                 <div style="text-align: center">
+                    <div id="div1" class="w-e-text-container">
+                    </div>
+                </div>
+                <div style="text-align: center;margin-top: 50px;margin-bottom: 10px">
                     图片1预览：
-                    <img src="img/photo1.png" height="100" width="100">
+                    <img src="img/photo1.png" height="100" width="100" id="imaged1">
                     图片2预览：
-                    <img src="img/photo2.png" height="100" width="100">
+                    <img src="img/photo2.png" height="100" width="100" id="imaged2">
                     图片3预览：
-                    <img src="img/photo3.jpg" height="100" width="100">
+                    <img src="img/photo3.jpg" height="100" width="100" id="imaged3">
+                    图片4预览：
+                    <img src="img/photo3.jpg" height="100" width="100" id="imaged4">
+                    图片5预览：
+                    <img src="img/photo3.jpg" height="100" width="100" id="imaged5">
                 </div>
             </div>
             <!--工具栏/--><!--工具栏-->
             <div class="box-tools text-center">
-                <button type="button" class="btn bg-maroon">保存</button>
+                <button type="button" class="btn bg-maroon" id="save">保存</button>
                 <button type="button" class="btn bg-default" onclick="history.back(-1);">返回</button>
             </div>
             <!--工具栏/-->
@@ -258,49 +281,30 @@
     <script src="./plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
     <script src="./plugins/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js"></script>
     <script type="text/javascript" src="plugins/wangEditor-3.1.1/release/wangEditor.min.js"></script>
+    <script type="text/javascript" src="plugins/common.js"></script>
     <script type="text/javascript">
         var E = window.wangEditor;
         var editor = new E('#div1');
         // 下面两个配置，使用其中一个即可显示“上传图片”的tab。但是两者不要同时使用！！！
-        editor.customConfig.uploadImgServer = '/upload';  // 上传图片到服务器
-        editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024;
+        editor.customConfig.uploadImgServer = ipAddr+'/upload';  // 上传图片到服务器
+        editor.customConfig.uploadImgMaxSize = 30 * 1024 * 1024;
         editor.customConfig.uploadImgMaxLength = 1;
+        // 隐藏“网络图片”tab
+        editor.customConfig.showLinkImg = false;
+        // 关闭粘贴内容中的样式
+        editor.customConfig.pasteFilterStyle = false;
+        // 忽略粘贴内容中的图片
+        editor.customConfig.pasteIgnoreImg = false;
+        editor.customConfig.uploadFileName = 'image';
         editor.customConfig.uploadImgTimeout = 1000;
         editor.customConfig.uploadImgHooks = {
-            before: function (xhr, editor, files) {
-                // 图片上传之前触发
-                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，files 是选择的图片文件
-
-                // 如果返回的结果是 {prevent: true, msg: 'xxxx'} 则表示用户放弃上传
-                // return {
-                //     prevent: true,
-                //     msg: '放弃上传'
-                // }
-            },
-            success: function (xhr, editor, result) {
-                // 图片上传并返回结果，图片插入成功之后触发
-                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
-            },
-            fail: function (xhr, editor, result) {
-                // 图片上传并返回结果，但图片插入错误时触发
-                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
-            },
-            error: function (xhr, editor) {
-                // 图片上传出错时触发
-                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象
-            },
-            timeout: function (xhr, editor) {
-                // 图片上传超时时触发
-                // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象
-            },
-
             // 如果服务器端返回的不是 {errno:0, data: [...]} 这种格式，可使用该配置
             // （但是，服务器端返回的必须是一个 JSON 格式字符串！！！否则会报错）
             customInsert: function (insertImg, result, editor) {
                 // 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
                 // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果
                 // 举例：假如上传图片成功后，服务器端返回的是 {url:'....'} 这种格式，即可这样插入图片：
-                var url = result.url;
+                var url = result.url[0];
                 insertImg(url)
                 // result 必须是一个 JSON 格式字符串！！！否则报错
             }
@@ -326,7 +330,96 @@
             'redo'  // 重复
         ];
         editor.create();
-        editor.txt.html();
+        $(function () {
+            var title = $("#title");
+            var subtitle = $("#subtitle");
+            var price = $("#price");
+            var adminName = $("#adminName");
+            var createTime = $("#createTime");
+            var updateTime = $("#updateTime");
+            var image1 = $("#image1");
+            var image2 = $("#image2");
+            var image3 = $("#image3");
+            var image4 = $("#image4");
+            var image5 = $("#image5");
+            var imaged1 = $("#imaged1");
+            var imaged2 = $("#imaged2");
+            var imaged3 = $("#imaged3");
+            var imaged4 = $("#imaged4");
+            var imaged5 = $("#imaged5");
+            var id = getParameter("id");
+            var map = new Map([['1',null],['2',null],['3',null],['4',null],['5',null]]);
+            $.ajax({
+                url: ipAddr+"/goods/selectGoodsDetailById",
+                data:{
+                    id:id
+                },
+                dataType:"json",
+                async: false,
+                success:function (data) {
+                    title.val(data.title);
+                    subtitle.val(data.subtitle);
+                    price.val(data.price);
+                    $("#sel option[value='"+data.status+"']").attr("selected","selected");
+                    adminName.val(data.adminName);
+                    createTime.val(mill2date(data.addTime));
+                    updateTime.val(mill2date(data.updateTime));
+                    for (var i = 1; i <=5; i++) {
+                        if(data.imagesMap[i]!=null){
+                            map.set(i,data.imagesMap[i]);
+                            $("#imaged"+i+"").attr("src",data.imagesMap[i]);
+                        }
+                    }
+                    editor.txt.html(data.description);
+                }
+            });
+            image1.on('change',function () {
+                var src1 = add("#image1");
+                map.set('1',src1);
+                imaged1.attr("src",src1);
+            });
+            image2.on('change',function () {
+                var src2 = add("#image2");
+                map.set('2',src2);
+                imaged2.attr("src",src2);
+            });
+            image3.on('change',function () {
+                var src3 = add("#image3");
+                map.set('3',src3);
+                imaged3.attr("src",src3);
+            });
+            image4.on('change',function () {
+                var src4 = add("#image4");
+                map.set('4',src4);
+                imaged4.attr("src",src4);
+            });
+            image5.on('change',function () {
+                var src5 = add("#image5");
+                map.set('5',src5);
+                imaged5.attr("src",src5);
+            });
+            $("#save").click(function () {
+                var txt = editor.txt.html();
+                $.post(ipAddr+"/goods/updateGoodsById",{
+                    id:id,
+                    title:title.val(),
+                    subtitle:subtitle.val(),
+                    price:price.val(),
+                    status:$("#sel option:selected").val(),
+                    images: mapToJson(map),
+                    description:txt,
+                    adminName:"小白"
+                },function (flag) {
+                    if(flag){
+                        alert("保存成功");
+                        location.href="goodsManage.html";
+                    }else {
+                        alert("保存失败");
+                    }
+                })
+            });
+        });
+
     </script>
     <script>
         $(document).ready(function() {
