@@ -314,85 +314,116 @@
                     window.alert("请选择需要删除的项目");
                 }else {
                     var ids = id_array.join(",");
-                    $.post(ipAddr+"/goods/deleteGoodsById",{ids:ids},function (flag) {
-                        if(flag==true){
-                            window.alert("删除成功");
-                            window.location.reload();
-                        }else {
-                            window.alert("删除失败");
-                            window.location.reload();
+                    $.ajax({
+                        url:ipAddr+"/goods/deleteGoodsById",
+                        data:{
+                            ids:ids
+                        },
+                        type:"post",
+                        dataType:"json",
+                        xhrFields: {
+                            withCredentials: true //允许跨域带Cookie
+                        },
+                        success:function (flag) {
+                            if(flag==true){
+                                window.alert("删除成功");
+                                window.location.reload();
+                            }else {
+                                window.alert("删除失败");
+                                window.location.reload();
+                            }
                         }
-                    })
+                    });
                 }
             });
 
 
         });
         function load(key,status,page,rows){
-            $.get(ipAddr+"/goods/selectGoodsByPage",{key:key,status:status,page:page,rows:rows},function (pb) {
-                var items = pb.items;
-                var list = '';
-                var pageList='';
-                pageList+='<li onclick="javascript:load(\''+key+'\','+status+','+1+','+rows+')"><a href="javascript:void(0)"  aria-label="Previous">首页</a></li>';
-                var before = pb.currentPage - 1;
-                if(before<=1){
-                    before=1;
-                }
-                var beforePage = '<li onclick="javascript:load(\''+key+'\','+status+','+before+','+rows+')"><a href="javascript:void(0)">上一页</a></li>';
-                pageList+=beforePage;
-                var begin;
-                var end;
-                if(pb.totalPage<10){
-                    begin=1;
-                    end=pb.totalPage;
-                }else {
-                    begin=pb.currentPage-5;
-                    end=pb.currentPage+4;
-                    if(begin<1){
+            $.ajax({
+                url:ipAddr+"/goods/selectGoodsByPage",
+                data:{
+                    key:key,
+                    status:status,
+                    page:page,
+                    rows:rows
+                },
+                dataType:"json",
+                type:"get",
+                xhrFields: {
+                    withCredentials: true //允许跨域带Cookie
+                },
+                success:function (pb) {
+                    var items = pb.items;
+                    var list = '';
+                    var pageList='';
+                    pageList+='<li onclick="javascript:load(\''+key+'\','+status+','+1+','+rows+')"><a href="javascript:void(0)"  aria-label="Previous">首页</a></li>';
+                    var before = pb.currentPage - 1;
+                    if(before<=1){
+                        before=1;
+                    }
+                    var beforePage = '<li onclick="javascript:load(\''+key+'\','+status+','+before+','+rows+')"><a href="javascript:void(0)">上一页</a></li>';
+                    pageList+=beforePage;
+                    var begin;
+                    var end;
+                    if(pb.totalPage<10){
                         begin=1;
-                        end=begin+9;
-                    }
-                    if(end>pb.totalPage){
                         end=pb.totalPage;
-                        begin=end-9;
-                    }
-                }
-                var li = '';
-                for(var i = begin;i<=end;i++){
-                    if(i==pb.currentPage){
-                        li += '<li onclick="javascript:load(\''+key+'\','+status+','+i+','+rows+')" class="active"><a href="javascript:void(0)">'+i+'</a></li>';
                     }else {
-                        li += '<li onclick="javascript:load(\''+key+'\','+status+','+i+','+rows+')"><a href="javascript:void(0)">'+i+'</a></li>';
+                        begin=pb.currentPage-5;
+                        end=pb.currentPage+4;
+                        if(begin<1){
+                            begin=1;
+                            end=begin+9;
+                        }
+                        if(end>pb.totalPage){
+                            end=pb.totalPage;
+                            begin=end-9;
+                        }
+                    }
+                    var li = '';
+                    for(var i = begin;i<=end;i++){
+                        if(i==pb.currentPage){
+                            li += '<li onclick="javascript:load(\''+key+'\','+status+','+i+','+rows+')" class="active"><a href="javascript:void(0)">'+i+'</a></li>';
+                        }else {
+                            li += '<li onclick="javascript:load(\''+key+'\','+status+','+i+','+rows+')"><a href="javascript:void(0)">'+i+'</a></li>';
+                        }
+                    }
+                    pageList+=li;
+                    var next = pb.currentPage + 1;
+                    if(next>pb.totalPage){
+                        next=pb.totalPage;
+                    }
+                    pageList+='<li onclick="javascript:load(\''+key+'\','+status+','+next+','+rows+')"><a href="javascript:void(0)">下一页</a></li>';
+                    pageList+='<li onclick="javascript:load(\''+key+'\','+status+','+pb.totalPage+','+rows+')"><a href="javascript:void(0)" aria-label="Next">尾页</a></li>';
+                    pages.html(pageList);
+                    pageData.html('总共'+pb.totalPage+'页，共'+pb.total+'条数据。');
+                    for (var i = 0; i < items.length; i++) {
+                        list+='<tr class="text-center">' +
+                            '                <td><input name="ids" type="checkbox" value="'+items[i].id+'"></td>\n' +
+                            '                <td>' +
+                            '                    '+items[i].id+
+                            '                </td>' +
+                            '                <td>'+items[i].title+'</td>' +
+                            '                <td>'+items[i].subtitle+'</td>' +
+                            '                <td>'+items[i].statusStr+'</td>' +
+                            '                <td>'+mill2date(items[i].addTime)+'</td>' +
+                            '                <td>'+mill2date(items[i].updateTime)+'</td>' +
+                            '                <td>￥'+items[i].price+'</td>' +
+                            '                <td class="text-center">' +
+                            '                    <button type="button" class="btn bg-olive btn-xs" onclick=\'location.href="goodsEdit.html?id='+items[i].id+'"\'>编辑</button>' +
+                            '                </td>' +
+                            '        </tr>';
+                    }
+                    goodsList.html(list);
+                },
+                error:function (XMLHttpRequest) {
+                    if(XMLHttpRequest.status==403){
+                        alert("权限不足");
+                        location.href="index.html"
                     }
                 }
-                pageList+=li;
-                var next = pb.currentPage + 1;
-                if(next>pb.totalPage){
-                    next=pb.totalPage;
-                }
-                pageList+='<li onclick="javascript:load(\''+key+'\','+status+','+next+','+rows+')"><a href="javascript:void(0)">下一页</a></li>';
-                pageList+='<li onclick="javascript:load(\''+key+'\','+status+','+pb.totalPage+','+rows+')"><a href="javascript:void(0)" aria-label="Next">尾页</a></li>';
-                pages.html(pageList);
-                pageData.html('总共'+pb.totalPage+'页，共'+pb.total+'条数据。');
-                for (var i = 0; i < items.length; i++) {
-                    list+='<tr class="text-center">' +
-                        '                <td><input name="ids" type="checkbox" value="'+items[i].id+'"></td>\n' +
-                        '                <td>' +
-                        '                    '+items[i].id+
-                        '                </td>' +
-                        '                <td>'+items[i].title+'</td>' +
-                        '                <td>'+items[i].subtitle+'</td>' +
-                        '                <td>'+items[i].statusStr+'</td>' +
-                        '                <td>'+mill2date(items[i].addTime)+'</td>' +
-                        '                <td>'+mill2date(items[i].updateTime)+'</td>' +
-                        '                <td>￥'+items[i].price+'</td>' +
-                        '                <td class="text-center">' +
-                        '                    <button type="button" class="btn bg-olive btn-xs" onclick=\'location.href="goodsEdit.html?id='+items[i].id+'"\'>编辑</button>' +
-                        '                </td>' +
-                        '        </tr>';
-                }
-                goodsList.html(list);
-            },"json");
+            });
         }
     </script>
 </body>

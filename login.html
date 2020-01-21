@@ -43,9 +43,9 @@
         <div class="login-box-body">
             <p class="login-box-msg">登录系统</p>
 
-            <form action="index.html" method="get">
+            <form>
                 <div class="form-group has-feedback">
-                    <input type="email" class="form-control" placeholder="用户名" id="username">
+                    <input type="text" class="form-control" placeholder="用户名" id="username">
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                 </div>
                 <div class="form-group has-feedback">
@@ -60,7 +60,7 @@
                     </div>-->
                     <!-- /.col -->
                     <div style="position: absolute; transform: translateX(-50%);left: 50%">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat" id="login">登录</button>
+                        <button type="button" class="btn btn-primary btn-block btn-flat" id="login">登录</button>
                     </div>
                     <!-- /.col -->
                 </div>
@@ -100,7 +100,7 @@
                         withCredentials: true //允许跨域带Cookie
                     },
                     success:function (flag) {
-                        if(!flag){
+                        if(flag==false){
                             alert("登录失败，用户名或密码错误")
                         }else {
                             $.ajax({
@@ -120,6 +120,14 @@
                                 }
                             });
                         }
+                    },
+                    error:function (XMLHttpRequest, textStatus, errorThrown) {
+                        // 状态码
+                        console.log(XMLHttpRequest.status);
+                        // 状态
+                        console.log(XMLHttpRequest.readyState);
+                        // 错误信息
+                        console.log(textStatus);
                     }
                 });
             });
