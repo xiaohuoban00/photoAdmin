@@ -363,22 +363,37 @@
             $("#save").click(function () {
                 var txt = editor.txt.html();
                 var sel = $("#sel option:selected");
-                $.post(ipAddr+"/goods/insertGoods",{
-                    title:title.val(),
-                    subtitle:subtitle.val(),
-                    price:price.val(),
-                    status:sel.val(),
-                    images: mapToJson(src),
-                    description: txt,
-                    adminName: "小白"
-                },function (flag) {
-                    if(flag==true){
-                        alert("新建成功");
-                        location.href="goodsManage.html"
-                    }else {
-                        alert("新建失败");
+                $.ajax({
+                    url:ipAddr+"/goods/insertGoods",
+                    type:post,
+                    data:{
+                        title:title.val(),
+                        subtitle:subtitle.val(),
+                        price:price.val(),
+                        status:sel.val(),
+                        images: mapToJson(src),
+                        description: txt,
+                        adminName: adminInfo.username
+                    },
+                    dataType:"json",
+                    xhrFields: {
+                        withCredentials: true //允许跨域带Cookie
+                    },
+                    success:function (flag) {
+                        if(flag==true){
+                            alert("新建成功");
+                            location.href="goodsManage.html"
+                        }else {
+                            alert("新建失败");
+                        }
+                    },
+                    error:function (XMLHttpRequest, textStatus, errorThrown) {
+                        if(XMLHttpRequest.status==403){
+                            alert("权限不足");
+                            location.href="index.html"
+                        }
                     }
-                })
+                });
             });
         });
     </script>

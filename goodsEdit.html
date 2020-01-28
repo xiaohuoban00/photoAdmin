@@ -356,6 +356,9 @@
                 },
                 dataType:"json",
                 async: false,
+                xhrFields: {
+                    withCredentials: true //允许跨域带Cookie
+                },
                 success:function (data) {
                     title.val(data.title);
                     subtitle.val(data.subtitle);
@@ -371,6 +374,12 @@
                         }
                     }
                     editor.txt.html(data.description);
+                },
+                error:function (XMLHttpRequest, textStatus, errorThrown) {
+                    if(XMLHttpRequest.status==403){
+                        alert("权限不足");
+                        location.href="index.html"
+                    }
                 }
             });
             image1.on('change',function () {
@@ -400,6 +409,38 @@
             });
             $("#save").click(function () {
                 var txt = editor.txt.html();
+                $.ajax({
+                   url:ipAddr+"/goods/updateGoodsById",
+                    data:{
+                        id:id,
+                        title:title.val(),
+                        subtitle:subtitle.val(),
+                        price:price.val(),
+                        status:$("#sel option:selected").val(),
+                        images: mapToJson(map),
+                        description:txt,
+                        adminName:adminInfo.username
+                    },
+                    type:"post",
+                    dataType:"json",
+                    xhrFields: {
+                        withCredentials: true //允许跨域带Cookie
+                    },
+                    success:function (flag) {
+                        if(flag){
+                            alert("保存成功");
+                            location.href="goodsManage.html";
+                        }else {
+                            alert("保存失败");
+                        }
+                    },
+                    error:function (XMLHttpRequest) {
+                        if(XMLHttpRequest.status==403){
+                            alert("权限不足");
+                            location.href="index.html"
+                        }
+                    }
+                });
                 $.post(ipAddr+"/goods/updateGoodsById",{
                     id:id,
                     title:title.val(),

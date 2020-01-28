@@ -119,4 +119,19 @@
 </aside>
 <script>
     $(".username").html(adminInfo.username);
+        var logout = $("#logout");
+        logout.click(function () {
+            $.ajax({
+                url:ipAddr+"/admin/logout",
+                dataType:"json",
+                xhrFields: {
+                    withCredentials: true //允许跨域带Cookie
+                },
+                type:"get",
+                success:function () {
+
+                }
+            });
+            location.href="login.html"
+        });
 </script>

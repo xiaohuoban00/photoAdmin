@@ -589,6 +589,9 @@
                         id:id,
                         password:$("#password").val()
                     },
+                    xhrFields: {
+                        withCredentials: true //允许跨域带Cookie
+                    },
                     datatype:"json",
                     type:"get",
                     success:function (flag) {
