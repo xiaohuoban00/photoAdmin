@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 
-    <title>数据 - AdminLTE2定制版 | Log in</title>
+    <title>摄影工作室后台管理</title>
 
 
     <!-- Tell the browser to be responsive to screen width -->
@@ -89,7 +89,7 @@
             });
             $('#login').click(function () {
                 $.ajax({
-                    url:"http://192.168.187.9:9000"+"/admin/accredit",
+                    url:"http://127.0.0.1:9000"+"/admin/accredit",
                     type:"post",
                     dataType:"json",
                     data:{
@@ -104,7 +104,7 @@
                             alert("登录失败，用户名或密码错误")
                         }else {
                             $.ajax({
-                                url:"http://192.168.187.9:9000"+"/admin/verify",
+                                url:"http://127.0.0.1:9000"+"/admin/verify",
                                 type:"get",
                                 dataType:"json",
                                 xhrFields: {

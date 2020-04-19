@@ -9,7 +9,7 @@
 
 
 
-    <title>数据 - AdminLTE2定制版</title>
+    <title>摄影工作室后台管理</title>
     <meta name="description" content="AdminLTE2定制版">
     <meta name="keywords" content="AdminLTE2定制版">
 
@@ -185,14 +185,6 @@
         <!-- @@close -->
         <!-- 内容区域 /-->
 
-        <!-- 底部导航 -->
-        <footer class="main-footer">
-            <div class="pull-right hidden-xs">
-                <b>Version</b> 1.0.8
-            </div>
-            <strong>Copyright &copy; 2014-2017 <a href="http://www.itcast.cn">研究院研发部</a>.</strong> All rights reserved.
-        </footer>
-        <!-- 底部导航 /-->
 
     </div>
     <div id="myModal1" class="modal modal-primary" role="dialog">
@@ -271,7 +263,7 @@
                                         <label><input type="checkbox" name="c1" value="/admin/" checked> 后台人员管理</label>
                                         <label><input type="checkbox" name="c1" value="/order/"> 订单管理</label>
                                         <label><input type="checkbox" name="c1" value="/goods/"> 商品管理</label>
-                                        <label><input type="checkbox" name="c1" value="/assess/"> 评价管理</label>
+                                        <label><input type="checkbox" name="c1" value="/comment/"> 评价管理</label>
                                         <label><input type="checkbox" name="c1" value="/information/"> 信息管理</label>
                                         <label><input type="checkbox" name="c1" value="/logs/"> 日志查看</label>
                                         <label><input type="checkbox" name="c1" value="/message/"> 消息推送</label>
@@ -313,7 +305,7 @@
                                         <label><input type="checkbox" name="c1" value="/admin/"> 后台人员管理</label>
                                         <label><input type="checkbox" name="c1" value="/order/"> 订单管理</label>
                                         <label><input type="checkbox" name="c1" value="/goods/"> 商品管理</label>
-                                        <label><input type="checkbox" name="c1" value="/assess/"> 评价管理</label>
+                                        <label><input type="checkbox" name="c1" value="/comment/"> 评价管理</label>
                                         <label><input type="checkbox" name="c1" value="/information/"> 信息管理</label>
                                         <label><input type="checkbox" name="c1" value="/logs/"> 日志查看</label>
                                         <label><input type="checkbox" name="c1" value="/message/"> 消息推送</label>
@@ -340,7 +332,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">新建管理员</h4>
+                    <h4 class="modal-title">是否启用</h4>
                 </div>
                 <div class="modal-body">
 
@@ -482,41 +474,42 @@
                 if(isDel){
                     $('input[name="ids"]:checked').each(function () {
                         id_array.push($(this).val());
-                    })
-                }
-                if(id_array.length==0){
-                    window.alert("请选择需要删除的项目");
-                }else {
-                    var ids = id_array.join(",");
-                    $.ajax({
-                        url:ipAddr+"/admin/deleteAdminById",
-                        type:"get",
-                        dataType:"json",
-                        data:{
-                          ids:ids
-                        },
-                        xhrFields: {
-                            withCredentials: true //允许跨域带Cookie
-                        },
-                        success:function (flag) {
-                            if(flag==true){
-                                window.alert("删除成功");
-                                window.location.reload();
-                            }else {
-                                window.alert("删除失败");
-                                window.location.reload();
-                            }
-                        },
-                        error:function (XMLHttpRequest, textStatus, errorThrown) {
-                            // 状态码
-                            console.log(XMLHttpRequest.status);
-                            // 状态
-                            console.log(XMLHttpRequest.readyState);
-                            // 错误信息
-                            console.log(textStatus);
-                        }
                     });
+                    if(id_array.length==0){
+                        window.alert("请选择需要删除的项目");
+                    }else {
+                        var ids = id_array.join(",");
+                        $.ajax({
+                            url:ipAddr+"/admin/deleteAdminById",
+                            type:"get",
+                            dataType:"json",
+                            data:{
+                                ids:ids
+                            },
+                            xhrFields: {
+                                withCredentials: true //允许跨域带Cookie
+                            },
+                            success:function (flag) {
+                                if(flag==true){
+                                    window.alert("删除成功");
+                                    window.location.reload();
+                                }else {
+                                    window.alert("删除失败");
+                                    window.location.reload();
+                                }
+                            },
+                            error:function (XMLHttpRequest, textStatus, errorThrown) {
+                                // 状态码
+                                console.log(XMLHttpRequest.status);
+                                // 状态
+                                console.log(XMLHttpRequest.readyState);
+                                // 错误信息
+                                console.log(textStatus);
+                            }
+                        });
+                    }
                 }
+
             });
             newUsername.blur(function () {
                 if(newUsername.val()==null||newUsername.val()==""){

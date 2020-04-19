@@ -205,15 +205,15 @@
                 </div>
                 <div style="text-align: center;margin-top: 50px;margin-bottom: 10px">
                     图片1预览：
-                    <img src="img/photo1.png" height="100" width="100" id="imaged1">
+                    <img src="img/timg.jpg" height="100" width="100" id="imaged1">
                     图片2预览：
-                    <img src="img/photo2.png" height="100" width="100" id="imaged2">
+                    <img src="img/timg.jpg" height="100" width="100" id="imaged2">
                     图片3预览：
-                    <img src="img/photo3.jpg" height="100" width="100" id="imaged3">
+                    <img src="img/timg.jpg" height="100" width="100" id="imaged3">
                     图片4预览：
-                    <img src="img/photo3.jpg" height="100" width="100" id="imaged4">
+                    <img src="img/timg.jpg" height="100" width="100" id="imaged4">
                     图片5预览：
-                    <img src="img/photo3.jpg" height="100" width="100" id="imaged5">
+                    <img src="img/timg.jpg" height="100" width="100" id="imaged5">
                 </div>
             </div>
             <!--工具栏/--><!--工具栏-->
@@ -224,14 +224,6 @@
             <!--工具栏/-->
         </section>
         </div>
-        <!-- 底部导航 -->
-        <footer class="main-footer">
-            <div class="pull-right hidden-xs">
-                <b>Version</b> 1.0.8
-            </div>
-            <strong>Copyright &copy; 2014-2017 <a href="http://www.itcast.cn">研究院研发部</a>.</strong> All rights reserved.
-        </footer>
-        <!-- 底部导航 /-->
 
     </div>
 
@@ -355,7 +347,7 @@
                     id:id
                 },
                 dataType:"json",
-                async: false,
+                /*async: false,*/
                 xhrFields: {
                     withCredentials: true //允许跨域带Cookie
                 },
@@ -369,7 +361,7 @@
                     updateTime.val(mill2date(data.updateTime));
                     for (var i = 1; i <=5; i++) {
                         if(data.imagesMap[i]!=null){
-                            map.set(i,data.imagesMap[i]);
+                            map.set(""+i+"",data.imagesMap[i]);
                             $("#imaged"+i+"").attr("src",data.imagesMap[i]);
                         }
                     }
@@ -441,23 +433,7 @@
                         }
                     }
                 });
-                $.post(ipAddr+"/goods/updateGoodsById",{
-                    id:id,
-                    title:title.val(),
-                    subtitle:subtitle.val(),
-                    price:price.val(),
-                    status:$("#sel option:selected").val(),
-                    images: mapToJson(map),
-                    description:txt,
-                    adminName:"小白"
-                },function (flag) {
-                    if(flag){
-                        alert("保存成功");
-                        location.href="goodsManage.html";
-                    }else {
-                        alert("保存失败");
-                    }
-                })
+
             });
         });
 

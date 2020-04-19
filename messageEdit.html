@@ -71,11 +71,11 @@
             <!-- 内容头部 -->
             <section class="content-header">
                 <h1>
-                    消息推送
+                    消息编辑
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="all-admin-index.html"><i class="fa fa-dashboard"></i> 首页</a></li>
-                    <li class="active">消息推送</li>
+                    <li class="active">消息编辑</li>
                 </ol>
             </section>
             <!-- 内容头部 /-->
@@ -105,14 +105,34 @@
                                     <label>封面图片</label>
                                     <input type="file" id="image" accept="image/gif, image/jpeg, image/png, image/jpg">
                                     <img src="" id="img">
+                                    <div class="form-group">
+                                        <label>状态</label>
+                                        <input type="text" class="form-control" placeholder="状态" id="status" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>操作者Id</label>
+                                        <input type="text" class="form-control" placeholder="操作者Id" id="AdminId" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>操作者名字</label>
+                                        <input type="text" class="form-control" placeholder="操作者名字" id="AdminName" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>创建时间</label>
+                                        <input type="text" class="form-control" placeholder="创建时间" id="createTime" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>发送时间</label>
+                                        <input type="text" class="form-control" placeholder="发送时间" id="sendTime" disabled>
+                                    </div>
                                     <div style="text-align: center;">
                                         <div id="div1" class="w-e-text-container">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="box-tools" style="margin-top: 40px;margin-left: 300px">
+                                <div class="box-tools" style="margin-top: 40px;margin-left: 300px" id="btu">
                                     <button type="button" class="btn bg-maroon" id="sub">推送</button>
-                                    <button type="button" class="btn bg-maroon" id="save">存为草稿</button>
+                                    <button type="button" class="btn bg-maroon" id="save">保存</button>
                                 </div>
                             </div>
                         </div>
@@ -239,74 +259,121 @@
     </script>
     <script type="text/javascript">
         var image = $("#image");
+        var st;
         var s;
-        image.on('change',function () {
-            var src = add("#image");
-            $("#img").attr("style","width:200px;heigth:400");
-            $("#img").attr("src",src);
-            s=src;
-        });
-        $("#sub").click(function () {
-            var txt = editor.txt.html();
-            if($("#title").val()==""){
-                alert("标题不能为空");
-                return;
-            }
+        $(function () {
             $.ajax({
-                url:ipAddr+"/message/insertMessage",
+                url:ipAddr+"/message/selectMessageById",
                 data:{
-                    title:$("#title").val(),
-                    content:txt,
-                    status:2,
-                    adminId:adminInfo.id,
-                    image:s
+                    id:getParameter("id")
                 },
-                async:false,
-                type:"post",
+                type:"get",
                 dataType:"json",
+                async:false,
                 xhrFields: {
                     withCredentials: true //允许跨域带Cookie
                 },
-                success:function (flag) {
-                    if(flag){
-                        alert("发送成功");
-                        location.reload();
-                    }else {
-                        alert("发送失败")
+                success:function (data) {
+                    $("#title").val(data.title);
+                    $("#img").attr("style","width:200px;heigth:400");
+                    $("#img").attr("src",data.image);
+                    var status = data.status==1?"草稿":"已发送";
+                    s=data.image;
+                    st=data.status;
+                    $("#status").val(status);
+                    $("#AdminId").val(data.adminInfo.id)
+                    $("#AdminName").val(data.adminInfo.username);
+                    $("#createTime").val(mill2date(data.createTime));
+                    var sendTime = data.sendTime==null?"无":mill2date(data.sendTime);
+                    $("#sendTime").val(sendTime);
+                    editor.txt.html(data.content);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    if (XMLHttpRequest.status == 403) {
+                        alert("权限不足");
+                        location.href = "index.html"
                     }
                 }
             })
-        })
-        $("#save").click(function () {
-            var txt = editor.txt.html();
-            if($("#title").val()==""){
-                alert("标题不能为空");
-                return;
-            }
-            $.ajax({
-                url:ipAddr+"/message/insertMessage",
-                data:{
-                    title:$("#title").val(),
-                    content:txt,
-                    status:1,
-                    adminId:adminInfo.id,
-                    image:s
-                },
-                async:false,
-                type:"post",
-                dataType:"json",
-                xhrFields: {
-                    withCredentials: true //允许跨域带Cookie
-                },
-                success:function (flag) {
-                    if(flag){
-                        alert("添加成功");
-                        location.reload();
-                    }else {
-                        alert("添加失败")
-                    }
+            image.on('change',function () {
+                var src = add("#image");
+                $("#img").attr("style","width:200px;heigth:400");
+                $("#img").attr("src",src);
+                s=src;
+                console.log(s);
+            });
+            $("#sub").click(function () {
+                var txt = editor.txt.html();
+                if($("#title").val()==""){
+                    alert("标题不能为空");
+                    return;
                 }
-            })
+                if(st==2){
+                    alert("已发送消息不可编辑");
+                    return;
+                }
+                $.ajax({
+                    url:ipAddr+"/message/insertMessage",
+                    data:{
+                        id:getParameter("id"),
+                        title:$("#title").val(),
+                        content:txt,
+                        status:2,
+                        adminId:adminInfo.id,
+                        image:s
+                    },
+                    async:false,
+                    type:"post",
+                    dataType:"json",
+                    xhrFields: {
+                        withCredentials: true //允许跨域带Cookie
+                    },
+                    success:function (flag) {
+                        if(flag){
+                            alert("发送成功");
+                            location.reload();
+                        }else {
+                            alert("发送失败")
+                        }
+                    }
+                })
+            });
+            $("#save").click(function () {
+                var txt = editor.txt.html();
+                if($("#title").val()==""){
+                    alert("标题不能为空");
+                    return;
+                }
+                if(st==2){
+                    alert("已发送消息不可编辑");
+                    return;
+                }
+                $.ajax({
+                    url:ipAddr+"/message/insertMessage",
+                    data:{
+                        id:getParameter("id"),
+                        title:$("#title").val(),
+                        content:txt,
+                        status:1,
+                        adminId:adminInfo.id,
+                        image:s
+                    },
+                    async:false,
+                    type:"post",
+                    dataType:"json",
+                    xhrFields: {
+                        withCredentials: true //允许跨域带Cookie
+                    },
+                    success:function (flag) {
+                        if(flag){
+                            alert("保存成功");
+                            location.reload();
+                        }else {
+                            alert("保存失败")
+                        }
+                    }
+                })
+            });
         });
     </script>
     <script>

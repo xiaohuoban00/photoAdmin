@@ -1,4 +1,13 @@
-var ipAddr="http://192.168.187.9:9000";
+var ipAddr="http://127.0.0.1:9000";
+//var ipAddr="http://api.xiaohuoban.monster";
+$.ajax({
+    url:ipAddr+"/admin/identity",
+    dataType:"json",
+    xhrFields: {
+        withCredentials: true //允许跨域带Cookie
+    },
+    type:"post",
+});
 Date.prototype.Format = function (fmt) {
     var o = {
         "M+": this.getMonth() + 1, //月份
@@ -65,8 +74,8 @@ $.ajax({
         withCredentials: true //允许跨域带Cookie
     },
     success:function (admin) {
-        if(admin.errorMsg!=null){
-            alert(admin.errorMsg);
+        if(admin.msg!=null){
+            alert(admin.msg);
             location.href="login.html";
         }
         if(admin.status==false){
@@ -86,3 +95,20 @@ $.ajax({
         console.log(textStatus);
     }
 });
+function formatDate1(time){
+    var date = new Date(time);
+
+    var year = date.getFullYear(),
+        month = date.getMonth() + 1,//月份是从0开始的
+        day = date.getDate(),
+        hour = date.getHours(),
+        min = date.getMinutes(),
+        sec = date.getSeconds();
+    var newTime = year + '-' +
+        month + '-' +
+        day + ' ' +
+        hour + ':' +
+        min + ':' +
+        sec;
+    return newTime;
+};

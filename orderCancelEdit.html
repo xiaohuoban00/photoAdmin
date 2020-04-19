@@ -9,7 +9,7 @@
 
 
 
-    <title>数据 - AdminLTE2定制版</title>
+    <title>摄影工作室后台管理</title>
     <meta name="description" content="AdminLTE2定制版">
     <meta name="keywords" content="AdminLTE2定制版">
 
@@ -157,50 +157,51 @@
 
                         <div class="col-md-2 title">订单编号</div>
                         <div class="col-md-4 data">
-                            <input type="text" class="form-control" placeholder="订单编号" value="">
+                            <input type="text" class="form-control" placeholder="订单编号" value="" id="orderId" disabled>
                         </div>
 
-                        <div class="col-md-2 title">下单时间</div>
+                        <div class="col-md-2 title">提交时间</div>
                         <div class="col-md-4 data">
-                            <div class="input-group date">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input type="text" class="form-control pull-right" id="datepicker-a3">
-                            </div>
+                            <input type="text" class="form-control" placeholder="提交时间" value="" id="createTime" disabled>
                         </div>
                         <div class="col-md-2 title">商品名称</div>
                         <div class="col-md-4 data">
-                            <input type="text" class="form-control" placeholder="商品名称" value="">
+                            <input type="text" class="form-control" placeholder="商品名称" value="" id="goodsName" disabled>
                         </div>
 
                         <div class="col-md-2 title">订单状态</div>
                         <div class="col-md-4 data">
-                            <input type="text" class="form-control" placeholder="订单状态" value="">
+                            <input type="text" class="form-control" placeholder="订单状态" value="" id="status" disabled>
                         </div>
 
                         <div class="col-md-2 title">付款时间</div>
                         <div class="col-md-4 data">
-                            <div class="input-group date">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input type="text" class="form-control pull-right" id="datepicker-a6">
-                            </div>
+                            <input type="text" class="form-control" placeholder="付款时间" value="" id="paymentTime" disabled>
                         </div>
-                        <div class="col-md-2 title">到店时间</div>
+                        <div class="col-md-2 title">交易关闭时间</div>
                         <div class="col-md-4 data">
-                            <div class="input-group date">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input type="text" class="form-control pull-right" id="datepicker-a4">
-                            </div>
+                            <input type="text" class="form-control" placeholder="交易关闭时间" value="" id="closeTime" disabled>
+                        </div>
+                        <div class="col-md-2 title">交易完成时间</div>
+                        <div class="col-md-4 data">
+                            <input type="text" class="form-control" placeholder="交易完成时间" value="" id="endTime" disabled>
+                        </div>
+                        <div class="col-md-2 title">付款方式</div>
+                        <div class="col-md-4 data">
+                            <input type="text" class="form-control" placeholder="付款方式" value="" id="paymentWay" disabled>
+                        </div>
+                        <div class="col-md-2 title">订单价格</div>
+                        <div class="col-md-4 data">
+                            <input type="text" class="form-control" placeholder="订单价格" value="" id="payMoney" disabled>
+                        </div>
+                        <div class="col-md-2 title">交易号</div>
+                        <div class="col-md-4 data">
+                            <input type="text" class="form-control" placeholder="交易号" value="" id="tradeNo" disabled>
                         </div>
 
                         <div class="col-md-2 title rowHeight2x">备注信息</div>
                         <div class="col-md-10 data rowHeight2x">
-                            <textarea class="form-control" rows="3" placeholder="备注信息"></textarea>
+                            <textarea class="form-control" rows="3" placeholder="备注信息" id="buyerMessage" disabled></textarea>
                         </div>
 
                     </div>
@@ -213,132 +214,62 @@
                     <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
                         <thead>
                         <tr>
-                            <th class="">ID</th>
-                            <th class="">用户名</th>
-                            <th class="">性别</th>
-                            <th class="">手机号码</th>
+                            <th>联系人</th>
+                            <th>手机号码</th>
                         </tr>
                         </thead>
                         <tbody>
 
                         <tr>
-                            <td>成人</td>
-                            <td><input type="text" size="10" value="" style="height:30px"></td>
-                            <td>
-                                <select class="form-control" style="height:30px">
-                                    <option>男</option>
-                                    <option>女</option>
-                                </select>
-                            </td>
-                            <td><input type="text" size="20" style="height:30px" value="13301131116"></td>
+                            <td><input type="text" size="20" style="height:30px" id="name" value="" disabled></td>
+                            <td><input type="text" size="20" style="height:30px" id="phone" value="" disabled></td>
                         </tr>
                         </tbody>
                     </table>
                     <!--数据列表/-->
                 </div>
                 <!--用户信息/-->
-                <!--订单处理-->
-                <div class="panel panel-default">
-                    <div class="panel-heading">订单处理</div>
-                    <div class="row data-type">
-
-                        <div class="col-md-2 title">处理人</div>
-                        <div class="col-md-10 data text">
-                            小白
-                        </div>
-
-                        <div class="col-md-2 title">支付方式</div>
-                        <div class="col-md-10 data">
-                            <div class="form-group form-inline">
-                                <div class="radio"><label><input type="radio" name="optionsRadios-a13" value="1"> 未支付</label></div>
-                                <div class="radio"><label><input type="radio" name="optionsRadios-a13" value="2"> 货到付款</label></div>
-                                <div class="radio"><label><input type="radio" name="optionsRadios-a13" value="3"> 支付宝支付</label></div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-2 title">订单状态</div>
-                        <div class="col-md-10 data text">
-                                <select class="form-control select2" style="width: 100%;">
-                                    <option value="" selected="selected">待付款</option>
-                                    <option value="">已付款</option>
-                                    <option value="">已完成</option>
-                                    <option value="">退款中</option>
-                                    <option value="">已取消</option>
-                                </select>
-                        </div>
-                        <div class="col-md-2 title">是否发送提醒</div>
-                        <div class="col-md-10 data line-height36">
-                            <div class="form-group form-inline">
-                                <div class="checkbox"><label><input type="checkbox" value="1"> 发送短信或邮件(仅本次有效)</label></div>
-                            </div>
-                        </div>
-                        <div class="col-md-2 title">照片状态</div>
-                        <div class="col-md-10 data text">
-                            <select class="form-control select2" style="width: 100%;">
-                                <option value="" selected="selected">未到店</option>
-                                <option value="">已到店</option>
-                                <option value="">待领取</option>
-                                <option value="">已完成</option>
-                                <option value="">已取消</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2 title">是否发送提醒</div>
-                        <div class="col-md-10 data line-height36">
-                            <div class="form-group form-inline">
-                                <div class="checkbox"><label><input type="checkbox" value="1"> 发送短信或邮件(仅本次有效)</label></div>
-                            </div>
-                        </div>
-                        <div class="col-md-2 title rowHeight2x">管理员备注</div>
-                        <div class="col-md-10 data rowHeight2x">
-                            <textarea class="form-control" rows="3" placeholder="管理员备注"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <!--订单处理/-->
                 <!--退款处理-->
                 <div class="panel panel-default">
                     <div class="panel-heading">退款处理</div>
                     <div class="row data-type">
 
                         <div class="col-md-2 title">处理人</div>
-                        <div class="col-md-10 data text">
-                            小白
-                        </div>
+                        <div class="col-md-10 data text" id="adminName">
 
+                        </div>
 
                         <div class="col-md-2 title">申请时间</div>
-                        <div class="col-md-10 data text">
-                            2020-11-11
+                        <div class="col-md-10 data text" id="applyTime">
+
                         </div>
 
-                        <div class="col-md-2 title">是否发送短信或邮件提醒</div>
-                        <div class="col-md-10 data line-height36">
-                            <div class="form-group form-inline">
-                                <div class="checkbox"><label><input type="checkbox" value="1"> 发送短信或邮件(仅本次有效)</label></div>
-                            </div>
+                        <div class="col-md-2 title">退款时间</div>
+                        <div class="col-md-10 data text" id="refundTime">
+
                         </div>
 
                         <div class="col-md-2 title rowHeight2x">退款原因</div>
                         <div class="col-md-10 data rowHeight2x">
-                            <textarea class="form-control" rows="3" placeholder="退款原因" disabled></textarea>
+                            <textarea class="form-control" rows="3" placeholder="退款原因" disabled id="refundReason"></textarea>
                         </div>
                         <div class="col-md-2 title">是否同意退款（如不同意请填写原因）</div>
                     <div class="col-md-10 data text">
-                        <select class="form-control" style="width: 100%;">
-                            <option value="" selected="selected">同意</option>
-                            <option value="">拒绝</option>
+                        <select class="form-control" style="width: 100%;" id="sel">
+                            <option value="1" selected="selected">同意</option>
+                            <option value="2">拒绝</option>
                         </select>
                     </div>
                         <div class="col-md-2 title rowHeight2x">拒绝原因</div>
                         <div class="col-md-10 data rowHeight2x">
-                            <textarea class="form-control" rows="3" placeholder="拒绝原因"></textarea>
+                            <textarea class="form-control" rows="3" placeholder="拒绝原因" id="reason"></textarea>
                         </div>
                     </div>
                 </div>
                 <!--/退款处理-->
                 <!--工具栏-->
                 <div class="box-tools text-center">
-                    <button type="button" class="btn bg-maroon">保存</button>
+                    <button type="button" class="btn bg-maroon" id="save">保存</button>
                     <button type="button" class="btn bg-default" onclick="history.back(-1);">返回</button>
                 </div>
                 <!--工具栏/-->
@@ -349,14 +280,6 @@
         </div>
         <!-- 内容区域 /-->
 
-        <!-- 底部导航 -->
-        <footer class="main-footer">
-            <div class="pull-right hidden-xs">
-                <b>Version</b> 1.0.8
-            </div>
-            <strong>Copyright &copy; 2014-2017 <a href="http://www.itcast.cn">研究院研发部</a>.</strong> All rights reserved.
-        </footer>
-        <!-- 底部导航 /-->
 
     </div>
 
@@ -406,6 +329,88 @@
     <script src="./plugins/bootstrap-slider/bootstrap-slider.js"></script>
     <script src="./plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
     <script src="./plugins/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="plugins/common.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var status = new Map([[1, "待付款"], [2, "已付款"], [3, "已完成"], [4, "退款中"], [5, "交易关闭"], [6, "待评价"]]);
+            var payWay = new Map([[1, "支付宝"]]);
+            var reason = new Map([[1,"不想要了"],[2,"买错了"],[3,"其他原因"]]);
+            $("#save").click(function () {
+                if($("#sel").val()==2){
+                    if($("#reason").val()==""){
+                        alert("请输入不同意原因");
+                        return;
+                    }
+                }
+                $.ajax({
+                    url:ipAddr+"/order/updateRefundById",
+                    data:{
+                        id:getParameter("id"),
+                        orderId:$("#orderId").val(),
+                        isAgree:$("#sel").val(),
+                        disagreeReason:$("#reason").val(),
+                        adminId:adminInfo.id
+                    },
+                    type:"post",
+                    dataType:"json",
+                    xhrFields: {
+                        withCredentials: true //允许跨域带Cookie
+                    },
+                    success:function (flag) {
+                        if(flag){
+                            alert("保存成功");
+                            location.href="orderCancel.html";
+                        }else {
+                            alert("保存失败")
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        if (XMLHttpRequest.status == 403) {
+                            alert("权限不足");
+                            location.href = "index.html"
+                        }
+                    }
+                })
+            });
+            $.ajax({
+                url:ipAddr+"/order/selectRefundById",
+                data:{
+                    id:getParameter("id")
+                },
+                type:"get",
+                dataType:"json",
+                xhrFields: {
+                    withCredentials: true //允许跨域带Cookie
+                },
+                success:function (data) {
+                    $("#orderId").val(data.orderId);
+                    $("#createTime").val(mill2date(data.order.createTime));
+                    $("#goodsName").val(data.goods.title);
+                    $("#status").val(status.get(data.order.status));
+                    $("#paymentTime").val(mill2date(data.order.paymentTime));
+                    $("#closeTime").val(data.order.closeTime==null?"无":mill2date(data.order.closeTime));
+                    $("#endTime").val(data.order.endTime==null?"无":mill2date(data.order.endTime));
+                    $("#payMoney").val(data.order.payMoney);
+                    $("#tradeNo").val(data.order.tradeNo);
+                    $("#buyerMessage").val(data.order.buyerMessage);
+                    $("#name").val(data.order.name);
+                    $("#phone").val(data.order.phone);
+                    $("#paymentWay").val(payWay.get(data.order.paymentWay))
+                    $("#adminName").html(data.adminInfo==null?"无":data.adminInfo.username);
+                    $("#applyTime").html(mill2date(data.applyRefundTime));
+                    $("#refundReason").val("("+reason.get(data.refundReason)+") "+data.refundExplain);
+                    $("#reason").val(data.disagreeReason);
+                    $("#refundTime").html(data.refundTime==null?"无":mill2date(data.refundTime));
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    if (XMLHttpRequest.status == 403) {
+                        alert("权限不足");
+                        location.href = "index.html"
+                    }
+                }
+            })
+        })
+    </script>
     <script>
         $(document).ready(function() {
             // 选择框

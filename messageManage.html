@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ch">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -91,15 +91,15 @@
                             <div class="pull-left">
                                 <div class="form-group form-inline">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>
+                                        <button type="button" class="btn btn-default" title="删除" id="del"><i class="fa fa-trash-o"></i> 删除</button>
                                         <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
                                     </div>
                                 </div>
                             </div>
                             <div class="box-tools pull-right">
                                 <div class="has-feedback">
-                                    <input type="text" class="form-control input-sm" placeholder="搜索">
-                                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                    <input type="text" class="form-control input-sm" id="searchValue" placeholder="搜索" >
+                                    <span class="glyphicon glyphicon-search form-control-feedback" id="sel"></span>
                                 </div>
                             </div>
                             <!--工具栏/-->
@@ -113,24 +113,15 @@
                                     </th>
                                     <th class="text-center sorting">ID</th>
                                     <th class="text-center">标题</th>
+                                    <th class="text-center">状态</th>
+                                    <th class="text-center">类型</th>
+                                    <th class="text-center">创建时间</th>
                                     <th class="text-center">发送时间</th>
-                                    <th class="text-center">发送人</th>
                                     <th class="text-center">操作</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="messageList">
 
-                                <tr>
-                                    <td><input name="ids" type="checkbox"></td>
-                                    <td class="text-center">1</td>
-                                    <td class="text-center">Internet Explorer 4.0</td>
-                                    <td class="text-center">Win 95+</td>
-                                    <td class="text-center">4</td>
-                                    <td class="text-center">
-                                        <button type="button" class="btn bg-olive btn-xs">查看</button>
-
-                                    </td>
-                                </tr>
                                 </tbody>
                                 <!--
                             <tfoot>
@@ -154,33 +145,14 @@
                     <!-- .box-footer-->
                     <div class="box-footer">
                         <div class="pull-left">
-                            <div class="form-group form-inline">
-                                总共2 页，共14 条数据。 每页
-                                <select class="form-control">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select> 条
+                            <div class="form-group form-inline" id="pageData">
+
                             </div>
                         </div>
 
                         <div class="box-tools pull-right">
-                            <ul class="pagination">
-                                <li>
-                                    <a href="#" aria-label="Previous">首页</a>
-                                </li>
-                                <li><a href="#">上一页</a></li>
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li><a href="#">下一页</a></li>
-                                <li>
-                                    <a href="#" aria-label="Next">尾页</a>
-                                </li>
+                            <ul class="pagination" id="pages">
+
                             </ul>
                         </div>
 
@@ -198,14 +170,6 @@
     <!-- @@close -->
     <!-- 内容区域 /-->
 
-    <!-- 底部导航 -->
-    <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-            <b>Version</b> 1.0.8
-        </div>
-        <strong>Copyright &copy; 2014-2017 <a href="http://www.itcast.cn">研究院研发部</a>.</strong> All rights reserved.
-    </footer>
-    <!-- 底部导航 /-->
 
 </div>
 <!-- /.modal -->
@@ -255,6 +219,145 @@
 <script src="./plugins/bootstrap-slider/bootstrap-slider.js"></script>
 <script src="./plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
 <script src="./plugins/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="plugins/common.js"></script>
+<script type="text/javascript">
+    var pageData = $("#pageData");
+    var pages = $("#pages");
+    var searchValue = $("#searchValue");
+    $(function () {
+        load("",1,10);
+        searchValue.click(function () {
+            load(searchValue.val(),1,10)
+        });
+        $("#del").click(function () {
+            var isDel = confirm("您确定要删除吗？");
+            var id_array = new Array();
+            if (isDel) {
+                $('input[name="ids"]:checked').each(function () {
+                    id_array.push($(this).val());
+                });
+                if (id_array.length == 0) {
+                    window.alert("请选择需要删除的项目");
+                } else {
+                    var ids = id_array.join(",");
+                    $.ajax({
+                        url: ipAddr + "/message/deleteMessageByIds",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            ids: ids
+                        },
+                        xhrFields: {
+                            withCredentials: true //允许跨域带Cookie
+                        },
+                        success: function (flag) {
+                            if (flag == true) {
+                                window.alert("删除成功");
+                                window.location.reload();
+                            } else {
+                                window.alert("删除失败");
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            if (XMLHttpRequest.status == 403) {
+                                alert("权限不足");
+                                location.href = "index.html"
+                            }
+                        }
+                    });
+                }
+            }
+
+        });
+    });
+    function load(key,page,rows) {
+        $.ajax({
+            url:ipAddr+"/message/selectMessageByPage",
+            data:{
+                key:key,
+                page:page,
+                rows:rows
+            },
+            type:"get",
+            dataType:"json",
+            xhrFields: {
+                withCredentials: true //允许跨域带Cookie
+            },
+            success:function (pb) {
+                var items = pb.items;
+                messageList='';
+                for (let i = 0; i < items.length; i++) {
+                    var status = items[i].status==1?"草稿":"已发送";
+                    var sendTime=items[i].sendTime==null?"无":mill2date(items[i].sendTime)
+                    messageList+='<tr>\n' +
+                        '<td><input name="ids" type="checkbox" value="'+items[i].id+'"></td>\n' +
+                        '<td class="text-center">'+items[i].id+'</td>\n' +
+                        '<td class="text-center">'+items[i].title+'</td>\n' +
+                        '<td class="text-center">'+status+'</td>\n' +
+                        '<td class="text-center">'+items[i].type+'</td>\n' +
+                        '<td class="text-center">'+mill2date(items[i].createTime)+'</td>\n' +
+                        '<td class="text-center">'+sendTime+'</td>\n' +
+                        '<td class="text-center">\n' +
+                        '    <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#myModal" onclick="getId('+items[i].id+')">编辑</button>\n' +
+                        '</td>\n' +
+                        '</tr>'
+                }
+                $("#messageList").html(messageList);
+                var pageList='';
+                pageList+='<li onclick="javascript:load(\''+key+'\','+1+','+rows+')"><a href="javascript:void(0)"  aria-label="Previous">首页</a></li>';
+                var before = pb.currentPage - 1;
+                if(before<=1){
+                    before=1;
+                }
+                var beforePage = '<li onclick="javascript:load(\''+key+'\','+before+','+rows+')"><a href="javascript:void(0)">上一页</a></li>';
+                pageList+=beforePage;
+                var begin;
+                var end;
+                if(pb.totalPage<10){
+                    begin=1;
+                    end=pb.totalPage;
+                }else {
+                    begin=pb.currentPage-5;
+                    end=pb.currentPage+4;
+                    if(begin<1){
+                        begin=1;
+                        end=begin+9;
+                    }
+                    if(end>pb.totalPage){
+                        end=pb.totalPage;
+                        begin=end-9;
+                    }
+                }
+                var li = '';
+                for(var i = begin;i<=end;i++){
+                    if(i==pb.currentPage){
+                        li += '<li onclick="javascript:load(\''+key+'\','+i+','+rows+')" class="active"><a href="javascript:void(0)">'+i+'</a></li>';
+                    }else {
+                        li += '<li onclick="javascript:load(\''+key+'\','+i+','+rows+')"><a href="javascript:void(0)">'+i+'</a></li>';
+                    }
+                }
+                pageList+=li;
+                var next = pb.currentPage + 1;
+                if(next>pb.totalPage){
+                    next=pb.totalPage;
+                }
+                pageList+='<li onclick="javascript:load(\''+key+'\','+next+','+rows+')"><a href="javascript:void(0)">下一页</a></li>';
+                pageList+='<li onclick="javascript:load(\''+key+'\','+pb.totalPage+','+rows+')"><a href="javascript:void(0)" aria-label="Next">尾页</a></li>';
+                pages.html(pageList);
+                pageData.html('总共'+pb.totalPage+'页，共'+pb.total+'条数据。');
+            },
+            error:function (XMLHttpRequest, textStatus, errorThrown) {
+                if(XMLHttpRequest.status==403){
+                    alert("权限不足");
+                    location.href="index.html"
+                }
+            }
+        })
+    }
+    function getId(id) {
+        location.href="messageEdit.html?id="+id;
+    }
+</script>
 <script>
     $(document).ready(function() {
         // 选择框

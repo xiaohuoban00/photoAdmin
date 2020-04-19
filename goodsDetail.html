@@ -194,15 +194,15 @@
                 </div>
                 <div style="text-align: center;margin-top: 50px;margin-bottom: 10px">
                 图片1预览：
-                <img src="img/photo1.png" height="100" width="100" id="imaged1">
+                <img src="img/timg.jpg" height="100" width="100" id="imaged1">
                 图片2预览：
-                <img src="img/photo2.png" height="100" width="100" id="imaged2">
+                <img src="img/timg.jpg" height="100" width="100" id="imaged2">
                 图片3预览：
-                <img src="img/photo3.jpg" height="100" width="100" id="imaged3">
+                <img src="img/timg.jpg" height="100" width="100" id="imaged3">
                 图片4预览：
-                <img src="img/photo3.jpg" height="100" width="100" id="imaged4">
+                <img src="img/timg.jpg" height="100" width="100" id="imaged4">
                 图片5预览：
-                <img src="img/photo3.jpg" height="100" width="100" id="imaged5">
+                <img src="img/timg.jpg" height="100" width="100" id="imaged5">
             </div>
             </div>
 
@@ -214,14 +214,7 @@
             <!--工具栏/-->
         </section>
         </div>
-        <!-- 底部导航 -->
-        <footer class="main-footer">
-            <div class="pull-right hidden-xs">
-                <b>Version</b> 1.0.8
-            </div>
-            <strong>Copyright &copy; 2014-2017 <a href="http://www.itcast.cn">研究院研发部</a>.</strong> All rights reserved.
-        </footer>
-        <!-- 底部导航 /-->
+
 
     </div>
 
@@ -365,7 +358,7 @@
                 var sel = $("#sel option:selected");
                 $.ajax({
                     url:ipAddr+"/goods/insertGoods",
-                    type:post,
+                    type:"post",
                     data:{
                         title:title.val(),
                         subtitle:subtitle.val(),
